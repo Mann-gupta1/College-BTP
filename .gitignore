@@ -1,0 +1,11 @@
+chest_xray/
+
+env/
+venv/
+
+__pycache__/
+*.pyc
+*.pyo
+
+.env
+
