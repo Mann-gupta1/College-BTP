@@ -63,7 +63,65 @@ python app.py
 
 ## Model Architecture
 
-The project uses a Convolutional Neural Network (CNN) with the following workflow:
-1. Image preprocessing and standardization
-2. Feature extraction through convolutional layers
-3. Classification into Normal/Pneumonic categories
+The project implements a Convolutional Neural Network (CNN) with the following architecture and workflow:
+
+### Input Layer
+- Input shape: 150x150x3 (RGB images)
+- Images are resized and normalized using VGG16 preprocessing
+- Pixel values are scaled to the range [-1, 1]
+
+### Feature Extraction Layers
+1. **First Convolutional Block**
+   - Conv2D layer with 32 filters, 3x3 kernel
+   - ReLU activation
+   - MaxPooling2D with 2x2 pool size
+   - Dropout (0.25) for regularization
+
+2. **Second Convolutional Block**
+   - Conv2D layer with 64 filters, 3x3 kernel
+   - ReLU activation
+   - MaxPooling2D with 2x2 pool size
+   - Dropout (0.25)
+
+3. **Third Convolutional Block**
+   - Conv2D layer with 128 filters, 3x3 kernel
+   - ReLU activation
+   - MaxPooling2D with 2x2 pool size
+   - Dropout (0.25)
+
+### Classification Layers
+1. **Flatten Layer**
+   - Converts 3D feature maps to 1D feature vector
+
+2. **Dense Layers**
+   - First Dense layer: 512 neurons with ReLU activation
+   - Dropout (0.5) for preventing overfitting
+   - Final Dense layer: 2 neurons with Softmax activation
+
+### Model Training
+- Loss function: Binary Cross-Entropy
+- Optimizer: Adam with learning rate of 0.001
+- Metrics: Accuracy
+- Early stopping to prevent overfitting
+- Data augmentation used during training:
+  - Random rotation
+  - Horizontal flipping
+  - Zoom range variation
+  - Width and height shifts
+
+### Prediction Process
+1. Image Preprocessing
+   - Load and resize input image to 150x150
+   - Apply VGG16 preprocessing
+   - Normalize pixel values
+
+2. Feature Extraction
+   - Input image passes through convolutional layers
+   - Features are extracted at different scales
+   - Spatial information is preserved through max pooling
+
+3. Classification
+   - Extracted features are flattened
+   - Dense layers process the features
+   - Softmax activation provides probability distribution
+   - Final output: NORMAL or PNEUMONIC prediction
